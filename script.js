@@ -8,7 +8,10 @@ app.use(express.json())
 app.use(cors())
 
 const connection = mysql.createConnection({
-
+  host: 'sql3.freesqldatabase.com',
+  user: 'sql3309579',
+  password: 'MmPNcrPPhy',
+  database: 'sql3309579'
 });
 
 connection.connect(function(error){
@@ -44,7 +47,7 @@ app.post('/', function(req,res){
 
 app.put('/:ID', function(req,res){
   const body = req.body
-  connection.query("UPDATE ToDo SET ? WHERE ID=?", [body, req.params.ID], 
+  connection.query("UPDATE ToDo SET ? WHERE _id=?", [body, req.params.ID], 
   function(error, results, fields){
     if(!error){
       res.send('user updated sucessfully','\n', results)
@@ -53,7 +56,7 @@ app.put('/:ID', function(req,res){
 })
 
 app.delete('/:ID', function(req,res){
-  connection.query("DELETE FROM ToDo where ID =?", [req.params.ID], function(error, results, fields){
+  connection.query("DELETE FROM ToDo where _id =?", [req.params.ID], function(error, results, fields){
     if(!error) 
     res.send('delete sucessful ID:' + req.params.ID)
     else console.log(error)
