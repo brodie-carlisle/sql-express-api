@@ -1,17 +1,19 @@
 const express = require('express');
 const mysql = require('mysql'); 
 const cors = require('cors');
+require('dotenv').config()
 
 const app = express()
+const port = process.env.PORT || 4000;
 
 app.use(express.json())
 app.use(cors())
 
 const connection = mysql.createConnection({
-  host: 'sql3.freesqldatabase.com',
-  user: 'sql3309579',
-  password: 'MmPNcrPPhy',
-  database: 'sql3309579'
+  host: process.env.DB_HOST, 
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE
 });
 
 connection.connect(function(error){
@@ -63,4 +65,4 @@ app.delete('/:ID', function(req,res){
   })
 })
 
-app.listen(4000)
+app.listen(port, ()=> console.log(`app listening on port ${port}`))
