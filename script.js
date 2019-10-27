@@ -1,9 +1,11 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql'); 
+const cors = require('cors');
 
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 const connection = mysql.createConnection({
 
@@ -36,7 +38,25 @@ app.post('/', function(req,res){
   }
   connection.query("INSERT INTO ToDo SET ? ", body, function(error, results, fields){
     if(error) console.log('error')
-    res.send(JSON.stringify(results))
+    res.send(JSON.stringify('inserted id: '+results.insertId))
+  })
+})
+
+app.put('/:ID', function(req,res){
+  const body = req.body
+  connection.query("UPDATE ToDo SET ? WHERE ID=?", [body, req.params.ID], 
+  function(error, results, fields){
+    if(!error){
+      res.send('user updated sucessfully','\n', results)
+    }
+  })
+})
+
+app.delete('/:ID', function(req,res){
+  connection.query("DELETE FROM ToDo where ID =?", [req.params.ID], function(error, results, fields){
+    if(!error) 
+    res.send('delete sucessful ID:' + req.params.ID)
+    else console.log(error)
   })
 })
 
